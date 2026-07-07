@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 
-interface Message {
+type Message = {
   role: 'user' | 'assistant';
   content: string;
-}
+};
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
@@ -16,8 +16,8 @@ export default function ChatInterface() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
+    const userMessage: Message = { role: 'user', content: input };
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
 
@@ -29,9 +29,11 @@ export default function ChatInterface() {
       });
 
       const data = await response.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
+      const assistantMessage: Message = { role: 'assistant', content: data.reply };
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'متاسفانه مشکلی پیش اومد. دوباره تلاش کن.' }]);
+      const errorMessage: Message = { role: 'assistant', content: 'متاسفانه مشکلی پیش اومد. دوباره تلاش کن.' };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setLoading(false);
     }
