@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { SAM_SYSTEM_PROMPT } from '@/lib/prompts';
-
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
