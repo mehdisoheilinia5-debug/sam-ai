@@ -5,10 +5,11 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
-    // اگر کلید API تنظیم نشده
-    if (!process.env.DEEPSEEK_API_KEY) {
+    const apiKey = process.env.DEEPSEEK_API_KEY;
+    
+    if (!apiKey) {
       return NextResponse.json({
-        reply: '⚠️ کلید API تنظیم نشده. لطفاً DEEPSEEK_API_KEY رو توی متغیرهای محیطی تنظیم کن.'
+        reply: '⚠️ کلید API تنظیم نشده. لطفاً DEEPSEEK_API_KEY رو تنظیم کن.'
       });
     }
 
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
@@ -31,14 +32,13 @@ export async function POST(req: Request) {
 
     const data = await response.json();
 
-    if (data.error) {
+    if (!response.ok) {
       return NextResponse.json({
-        reply: `❌ خطای API: ${data.error.message || 'مشکل در ارتباط با DeepSeek'}`
+        reply: `❌ خطای API: ${data.error?.message || 'مشکل در ارتباط با DeepSeek'}`
       });
     }
 
     const reply = data.choices?.[0]?.message?.content || 'متاسفانه پاسخی دریافت نشد.';
-
     return NextResponse.json({ reply });
 
   } catch (error: any) {
