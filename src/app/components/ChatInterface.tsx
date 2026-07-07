@@ -29,10 +29,21 @@ export default function ChatInterface() {
       });
 
       const data = await response.json();
-      const assistantMessage: Message = { role: 'assistant', content: data.reply };
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const assistantMessage: Message = { 
+        role: 'assistant', 
+        content: data.reply || 'متاسفانه پاسخی دریافت نشد.' 
+      };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      const errorMessage: Message = { role: 'assistant', content: 'متاسفانه مشکلی پیش اومد. دوباره تلاش کن.' };
+      const errorMessage: Message = { 
+        role: 'assistant', 
+        content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.' 
+      };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setLoading(false);
