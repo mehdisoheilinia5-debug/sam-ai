@@ -18,7 +18,6 @@ export default function Home() {
       fontFamily: 'var(--font-sans)',
       transition: 'all var(--transition)',
     }}>
-      {/* هدر */}
       <header className="header" style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -48,9 +47,7 @@ export default function Home() {
           >
             {isDark ? '☀️' : '🌙'}
           </button>
-          <span style={{ fontSize: '14px', opacity: 0.5, display: 'none', '@media(min-width:500px)': { display: 'inline' } }}>
-            دستیار شخصی هنری
-          </span>
+          <span className="header-subtitle">دستیار شخصی هنری</span>
         </div>
       </header>
 
