@@ -44,7 +44,6 @@ body {
 
 ::selection { background: var(--red); color: #fff; }
 
-/* ===== کلاس‌ها ===== */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -122,6 +121,19 @@ body {
 
 .text-red { color: var(--red); }
 .bg-red { background: var(--red); }
+
+/* ===== کلاس جدید برای subtitle ===== */
+.header-subtitle {
+  display: none;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+@media (min-width: 500px) {
+  .header-subtitle {
+    display: inline;
+  }
+}
 
 @media (max-width: 600px) {
   .card { padding: 16px; }
