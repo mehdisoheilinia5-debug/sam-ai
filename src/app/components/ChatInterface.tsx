@@ -30,36 +30,31 @@ export default function ChatInterface() {
 
       const data = await response.json();
       
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
       const assistantMessage: Message = { 
         role: 'assistant', 
         content: data.reply || 'متاسفانه پاسخی دریافت نشد.' 
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      const errorMessage: Message = { 
+      setMessages((prev) => [...prev, { 
         role: 'assistant', 
         content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.' 
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      }]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
+    <div style={{ maxWidth: '700px', margin: '0 auto', padding: '16px' }}>
       <div style={{
-        background: '#141414',
-        borderRadius: '16px',
+        background: 'var(--bg-card)',
+        borderRadius: 'var(--radius)',
         padding: '20px',
         minHeight: '400px',
         maxHeight: '500px',
         overflowY: 'auto',
-        border: '1px solid rgba(255,107,0,0.15)',
+        border: '1px solid var(--border-color)',
       }}>
         {messages.map((msg, i) => (
           <div key={i} style={{
@@ -68,11 +63,12 @@ export default function ChatInterface() {
           }}>
             <div style={{
               display: 'inline-block',
-              background: msg.role === 'user' ? 'rgba(255,107,0,0.2)' : 'rgba(255,255,255,0.04)',
+              background: msg.role === 'user' ? 'var(--red-glow)' : 'var(--bg-input)',
               padding: '10px 16px',
               borderRadius: '12px',
               maxWidth: '80%',
-              border: msg.role === 'assistant' ? '1px solid rgba(255,107,0,0.08)' : 'none',
+              border: msg.role === 'assistant' ? '1px solid var(--border-color)' : 'none',
+              color: 'var(--text-primary)',
             }}>
               {msg.content}
             </div>
@@ -88,30 +84,15 @@ export default function ChatInterface() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="پیامت رو به SAM بگو..."
-          style={{
-            flex: 1,
-            padding: '12px 16px',
-            background: '#0a0a0a',
-            border: '1px solid rgba(255,107,0,0.2)',
-            borderRadius: '12px',
-            color: '#f5f5f5',
-            outline: 'none',
-          }}
+          className="input-field"
         />
         <button
           onClick={sendMessage}
           disabled={loading}
-          style={{
-            padding: '12px 24px',
-            background: '#ff6b00',
-            border: 'none',
-            borderRadius: '12px',
-            color: '#0a0a0a',
-            fontWeight: '600',
-            cursor: loading ? 'default' : 'pointer',
-          }}
+          className="btn-primary"
+          style={{ padding: '12px 24px', fontSize: '15px', whiteSpace: 'nowrap' }}
         >
-          ارسال
+          {loading ? '...' : 'ارسال'}
         </button>
       </div>
     </div>
