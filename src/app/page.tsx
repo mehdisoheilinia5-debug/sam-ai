@@ -23,7 +23,7 @@ export default function Home() {
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         color: 'var(--text-primary)',
-        padding: '16px 8px 0 8px',
+        padding: '30px 8px 0 8px',
         fontFamily: 'var(--font-sans)',
         transition: 'all var(--transition)',
         display: 'flex',
@@ -47,16 +47,16 @@ export default function Home() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '10px 16px',
-          marginBottom: '12px',
+          marginBottom: '14px',
           flexShrink: 0,
           position: 'sticky',
-          top: '12px',
+          top: '20px',
           zIndex: 20,
           background: 'var(--bg-secondary)',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius)',
           boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
-          minHeight: '52px',
+          minHeight: '54px',
         }}
       >
         <button
