@@ -1,14 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { useChatHistory } from '../hooks/useChatHistory';
-
-type Message = {
-  role: 'user' | 'assistant';
-  content: string;
-};
+import { useChatHistory, type Message } from '../hooks/useChatHistory';
 
 export default function ChatInterface() {
-  const { getActiveChat, addMessage, newChat } = useChatHistory();
+  const { getActiveChat, addMessage } = useChatHistory();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const activeChat = getActiveChat();
@@ -36,11 +31,10 @@ export default function ChatInterface() {
       };
       addMessage(assistantMessage);
     } catch (error) {
-      const errorMessage: Message = {
+      addMessage({
         role: 'assistant',
         content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.'
-      };
-      addMessage(errorMessage);
+      });
     } finally {
       setLoading(false);
     }
@@ -92,13 +86,20 @@ export default function ChatInterface() {
           disabled={loading}
           className="btn-primary"
           style={{
-            padding: '12px 20px',
-            fontSize: '18px',
+            padding: '10px 16px',
+            fontSize: '20px',
             whiteSpace: 'nowrap',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minWidth: '52px',
+            minWidth: '44px',
+            minHeight: '44px',
+            borderRadius: '50%',
+            background: 'var(--red)',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all var(--transition)',
           }}
         >
           {loading ? '...' : '➤'}
