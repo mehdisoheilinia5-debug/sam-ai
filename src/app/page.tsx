@@ -14,22 +14,18 @@ export default function Home() {
 
   useEffect(() => {
     document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
   }, [lang]);
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--bg-primary)',
-        color: 'var(--text-primary)',
-        padding: '0 8px',
-        fontFamily: 'var(--font-sans)',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{
+      minHeight: '100vh',
+      background: 'var(--bg-primary)',
+      color: 'var(--text-primary)',
+      padding: '0 8px',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+    }}>
       <SideMenu
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
@@ -39,27 +35,24 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      {/* هدر با فاصله از بالا */}
-      <div style={{ height: '30px', flexShrink: 0 }} /> {/* ← این فاصله‌ی ثابت رو اضافه کردم */}
+      {/* فاصله ثابت از بالا */}
+      <div style={{ height: 50, flexShrink: 0 }} />
 
-      <header
-        className="header"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 16px',
-          marginBottom: '14px',
-          flexShrink: 0,
-          position: 'relative',
-          zIndex: 10,
-          background: 'var(--bg-secondary)',
-          border: '1px solid var(--border-color)',
-          borderRadius: 'var(--radius)',
-          boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
-          minHeight: '54px',
-        }}
-      >
+      <header style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 16px',
+        marginBottom: 12,
+        flexShrink: 0,
+        position: 'relative',
+        zIndex: 10,
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-color)',
+        borderRadius: 14,
+        minHeight: 54,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
+      }}>
         <button
           onClick={() => setMenuOpen(true)}
           style={{
@@ -67,25 +60,22 @@ export default function Home() {
             border: 'none',
             color: 'var(--text-primary)',
             cursor: 'pointer',
-            fontSize: '24px',
-            padding: '4px',
-            fontWeight: '300',
+            fontSize: 24,
+            padding: 4,
           }}
         >
           ☰
         </button>
-        <h1
-          className="title-font"
-          style={{
-            fontSize: 'clamp(26px, 5vw, 34px)',
-            fontWeight: '700',
-            color: 'var(--red)',
-            letterSpacing: '-0.5px',
-          }}
-        >
+        <h1 style={{
+          fontSize: 'clamp(26px, 5vw, 34px)',
+          fontWeight: 700,
+          color: 'var(--red)',
+          letterSpacing: '-0.5px',
+          fontFamily: 'var(--font-serif)',
+        }}>
           SAM AI
         </h1>
-        <div style={{ width: '32px' }} />
+        <div style={{ width: 32 }} />
       </header>
 
       <div style={{ flex: 1, overflow: 'hidden' }}>
