@@ -50,11 +50,8 @@ export function useChatHistory() {
     setChats(prev => prev.map(chat => {
       if (chat.id === activeChatId) {
         const newMessages = [...chat.messages, message];
-        return {
-          ...chat,
-          messages: newMessages,
-          title: chat.messages.length === 0 ? message.content.slice(0, 30) + '...' : chat.title,
-        };
+        const title = chat.messages.length === 0 ? message.content.slice(0, 30) + '...' : chat.title;
+        return { ...chat, messages: newMessages, title };
       }
       return chat;
     }));
