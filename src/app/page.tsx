@@ -23,7 +23,7 @@ export default function Home() {
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         color: 'var(--text-primary)',
-        padding: '8px 8px 0 8px',  // ← فاصله از بالا و کناره‌ها
+        padding: '16px 8px 0 8px',
         fontFamily: 'var(--font-sans)',
         transition: 'all var(--transition)',
         display: 'flex',
@@ -40,23 +40,23 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      {/* هدر با فاصله از بالا و چسبیده به بالا */}
       <header
         className="header"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '8px 14px',
-          marginBottom: '10px',
+          padding: '10px 16px',
+          marginBottom: '12px',
           flexShrink: 0,
           position: 'sticky',
-          top: '4px',        // ← فاصله ۴ پیکسل از بالای صفحه
+          top: '12px',
           zIndex: 20,
           background: 'var(--bg-secondary)',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius)',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
+          minHeight: '52px',
         }}
       >
         <button
@@ -66,7 +66,7 @@ export default function Home() {
             border: 'none',
             color: 'var(--text-primary)',
             cursor: 'pointer',
-            fontSize: '22px',
+            fontSize: '24px',
             padding: '4px',
             fontWeight: '300',
           }}
@@ -76,7 +76,7 @@ export default function Home() {
         <h1
           className="title-font"
           style={{
-            fontSize: 'clamp(24px, 4.5vw, 32px)',
+            fontSize: 'clamp(26px, 5vw, 34px)',
             fontWeight: '700',
             color: 'var(--red)',
             letterSpacing: '-0.5px',
