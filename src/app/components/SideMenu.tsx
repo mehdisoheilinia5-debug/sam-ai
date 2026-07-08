@@ -30,7 +30,7 @@ export default function SideMenu({
       <div className={`menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`menu-panel ${isOpen ? 'open' : ''}`}>
         <div className="profile-card">
-          <div className="profile-avatar">{profileName.charAt(0)}</div>
+          <div className="profile-avatar">{profileName.charAt(0).toUpperCase()}</div>
           <div style={{ flex: 1 }}>
             {editingName ? (
               <input
@@ -112,16 +112,21 @@ export default function SideMenu({
           className="menu-item"
           style={{ color: 'var(--red)' }}
         >
-          <span style={{ fontSize: '16px' }}>✚</span> {t('چت جدید', 'New Chat')}
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>✚</span>
+          {t('چت جدید', 'New Chat')}
         </button>
 
         <div className="menu-divider" />
 
         <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
-          {isDark ? '☀️' : '🌙'} {t('تغییر تم', 'Theme')}
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>
+            {isDark ? '☀️' : '🌙'}
+          </span>
+          {t('تغییر تم', 'Theme')}
         </button>
         <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
-          <span style={{ fontSize: '16px' }}>🌐</span> {lang === 'fa' ? 'English' : 'فارسی'}
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>🌐</span>
+          {lang === 'fa' ? 'English' : 'فارسی'}
         </button>
 
         <div className="menu-divider" />
@@ -135,7 +140,8 @@ export default function SideMenu({
             }
           }}
         >
-          <span style={{ fontSize: '16px' }}>🗑</span> {t('پاک کردن تاریخچه', 'Clear History')}
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>🗑</span>
+          {t('پاک کردن تاریخچه', 'Clear History')}
         </button>
       </div>
     </>
