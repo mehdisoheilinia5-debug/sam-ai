@@ -17,7 +17,6 @@
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  /* Fallback before the layout script runs; overwritten in JS with the real value */
   --app-height: 100dvh;
 }
 
@@ -174,7 +173,6 @@ body {
 .profile-name {
   font-weight: 600;
   font-size: 15px;
-  cursor: pointer;
 }
 .profile-input {
   background: transparent;
@@ -258,6 +256,27 @@ body {
 }
 [dir='rtl'] .send-icon {
   transform: scaleX(-1);
+}
+
+/* ===== دکمه کپی ===== */
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  opacity: 0.55;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity var(--transition), color var(--transition);
+}
+.copy-button:hover {
+  opacity: 1;
+  color: var(--red-light);
 }
 
 /* ===== لوگوی هدر ===== */
