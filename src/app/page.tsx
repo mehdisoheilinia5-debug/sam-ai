@@ -18,14 +18,16 @@ export default function Home() {
   }, [lang]);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'var(--bg-primary)',
-      color: 'var(--text-primary)',
-      padding: '16px',
-      fontFamily: 'var(--font-sans)',
-      transition: 'all var(--transition)',
-    }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
+        padding: '12px 10px',
+        fontFamily: 'var(--font-sans)',
+        transition: 'all var(--transition)',
+      }}
+    >
       <SideMenu
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
@@ -35,13 +37,16 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      <header className="header" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '16px',
-        padding: '8px 16px',
-      }}>
+      <header
+        className="header"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '14px',
+          padding: '6px 14px',
+        }}
+      >
         <button
           onClick={() => setMenuOpen(true)}
           style={{
@@ -55,12 +60,15 @@ export default function Home() {
         >
           ☰
         </button>
-        <h1 className="title-font" style={{
-          fontSize: 'clamp(24px, 4.5vw, 32px)',
-          fontWeight: '700',
-          color: 'var(--red)',
-          letterSpacing: '-0.5px',
-        }}>
+        <h1
+          className="title-font"
+          style={{
+            fontSize: 'clamp(24px, 4.5vw, 32px)',
+            fontWeight: '700',
+            color: 'var(--red)',
+            letterSpacing: '-0.5px',
+          }}
+        >
           SAM AI
         </h1>
         <div style={{ width: '32px' }} />
