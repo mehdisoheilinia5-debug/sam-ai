@@ -21,10 +21,11 @@ export default function Home() {
     <ChatHistoryProvider>
       <div
         style={{
-          // 100dvh instead of 100vh: recalculates with the mobile browser's
-          // address bar instead of assuming the tallest possible viewport,
-          // which is what was pushing the header out of view.
-          height: '100dvh',
+          // Uses the real viewport height computed in layout.tsx (via
+          // --app-height), which is more reliable on mobile than 100vh or
+          // 100dvh alone — those were leaving a gap / pushing the header
+          // until the page was scrolled once.
+          height: 'var(--app-height, 100dvh)',
           background: 'var(--bg-primary)',
           color: 'var(--text-primary)',
           padding: '8px 8px 0 8px',
