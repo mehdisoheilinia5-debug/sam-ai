@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useChatHistory, type Message } from '../hooks/useChatHistory';
 
 interface ChatInterfaceProps {
@@ -11,6 +11,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
 
@@ -20,6 +21,10 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       setMessages(chat.messages);
     }
   }, [getActiveChat]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
@@ -56,6 +61,8 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
     }
   };
 
+  const hasMessages = messages.length > 0;
+
   return (
     <div
       style={{
@@ -67,6 +74,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
         padding: '0 12px',
       }}
     >
+      {/* ناحیه پیام‌ها - اسکرول‌پذیر */}
       <div
         style={{
           flex: 1,
@@ -76,53 +84,82 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
           overflowY: 'auto',
           border: '1px solid var(--border-color)',
           marginBottom: '10px',
-          minHeight: '150px',
+          minHeight: '100px',
         }}
       >
-        {messages.map((msg, i) => (
+        {!hasMessages ? (
           <div
-            key={i}
             style={{
-              textAlign:
-                msg.role === 'user'
-                  ? lang === 'fa'
-                    ? 'right'
-                    : 'left'
-                  : lang === 'fa'
-                  ? 'left'
-                  : 'right',
-              marginBottom: '8px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              color: 'var(--text-secondary)',
+              textAlign: 'center',
+              padding: '20px',
             }}
           >
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎭</div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '6px' }}>
+              {t('به SAM AI خوش آمدید', 'Welcome to SAM AI')}
+            </h3>
+            <p style={{ fontSize: '14px', opacity: 0.6, maxWidth: '300px' }}>
+              {t(
+                'دستیار هنری شما برای تحلیل شخصیت، نوشتن نمایشنامه و ایده‌پردازی',
+                'Your artistic assistant for character analysis, playwriting, and ideation'
+              )}
+            </p>
+          </div>
+        ) : (
+          messages.map((msg, i) => (
             <div
+              key={i}
               style={{
-                display: 'inline-block',
-                background: msg.role === 'user' ? 'var(--red-glow)' : 'var(--bg-input)',
-                padding: '8px 14px',
-                borderRadius: '12px',
-                maxWidth: '80%',
-                border: msg.role === 'assistant' ? '1px solid var(--border-color)' : 'none',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                lineHeight: '1.5',
+                textAlign:
+                  msg.role === 'user'
+                    ? lang === 'fa'
+                      ? 'right'
+                      : 'left'
+                    : lang === 'fa'
+                    ? 'left'
+                    : 'right',
+                marginBottom: '8px',
               }}
             >
-              {msg.content}
+              <div
+                style={{
+                  display: 'inline-block',
+                  background: msg.role === 'user' ? 'var(--red-glow)' : 'var(--bg-input)',
+                  padding: '8px 14px',
+                  borderRadius: '12px',
+                  maxWidth: '80%',
+                  border: msg.role === 'assistant' ? '1px solid var(--border-color)' : 'none',
+                  color: 'var(--text-primary)',
+                  fontSize: '14px',
+                  lineHeight: '1.5',
+                }}
+              >
+                {msg.content}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
         {loading && (
           <div style={{ textAlign: 'left', opacity: 0.5, fontSize: '13px' }}>
             SAM {t('در حال تایپ...', 'is typing...')}
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
+      {/* کادر تایپ - ثابت در پایین */}
       <div
         style={{
           display: 'flex',
           gap: '8px',
           paddingBottom: '6px',
+          flexShrink: 0,
         }}
       >
         <input
