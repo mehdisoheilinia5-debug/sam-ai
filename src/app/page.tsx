@@ -23,13 +23,12 @@ export default function Home() {
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         color: 'var(--text-primary)',
-        padding: '20px 8px 0 8px',
+        padding: '0 8px',
         fontFamily: 'var(--font-sans)',
         transition: 'all var(--transition)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        position: 'relative',
       }}
     >
       <SideMenu
@@ -48,7 +47,8 @@ export default function Home() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '10px 16px',
-          marginBottom: '12px',
+          marginTop: '24px',
+          marginBottom: '14px',
           flexShrink: 0,
           position: 'relative',
           zIndex: 10,
