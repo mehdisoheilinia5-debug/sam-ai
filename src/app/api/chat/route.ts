@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat',
+        model: 'deepseek/deepseek-chat:free',  // ← تغییر اصلی: اضافه کردن :free
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
