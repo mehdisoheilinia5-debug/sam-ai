@@ -48,7 +48,6 @@ export default function SideMenu({
                 {profileName} ✏️
               </div>
             )}
-            <div className="profile-username">@mehdisoheilinia</div>
           </div>
         </div>
 
@@ -72,7 +71,7 @@ export default function SideMenu({
               }}
             >
               <span style={{ fontSize: '13px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                {chat.title || 'چت جدید'}
+                {chat.title || t('چت جدید', 'New Chat')}
               </span>
               <button
                 onClick={(e) => { e.stopPropagation(); deleteChat(chat.id); }}
@@ -111,7 +110,7 @@ export default function SideMenu({
 
         <div className="menu-divider" />
 
-        <button className="menu-item danger" onClick={() => { /* خروج */ }}>
+        <button className="menu-item danger" onClick={() => { /* خروج - غیرفعال */ }}>
           🚪 {t('خروج', 'Logout')}
         </button>
       </div>
