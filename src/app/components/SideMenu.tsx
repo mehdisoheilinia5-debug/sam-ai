@@ -49,7 +49,7 @@ export default function SideMenu({
                 onClick={() => setEditingName(true)}
                 style={{ cursor: 'pointer' }}
               >
-                {profileName || t('کاربر', 'User')} ✏️
+                {profileName || t('کاربر', 'User')}
               </div>
             )}
           </div>
@@ -96,9 +96,10 @@ export default function SideMenu({
                   cursor: 'pointer',
                   fontSize: '14px',
                   padding: '0 4px',
+                  fontWeight: '300',
                 }}
               >
-                ✕
+                ×
               </button>
             </div>
           ))}
@@ -112,20 +113,15 @@ export default function SideMenu({
           className="menu-item"
           style={{ color: 'var(--red)' }}
         >
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>+</span>
           {t('چت جدید', 'New Chat')}
         </button>
 
         <div className="menu-divider" />
 
         <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>
-            {isDark ? '☀' : '☽'}
-          </span>
           {t('تغییر تم', 'Theme')}
         </button>
         <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>🌐</span>
           {lang === 'fa' ? 'English' : 'فارسی'}
         </button>
 
@@ -140,7 +136,6 @@ export default function SideMenu({
             }
           }}
         >
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>⌫</span>
           {t('پاک کردن تاریخچه', 'Clear History')}
         </button>
       </div>
