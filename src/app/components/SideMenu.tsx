@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useChatHistory } from '../hooks/useChatHistory';
+import { useChatHistory } from '../contexts/ChatHistoryContext';
 
 interface Props {
   isOpen: boolean;
@@ -15,7 +15,7 @@ export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, t
   const { chats, activeChatId, switchChat, newChat, deleteChat } = useChatHistory();
   const [name, setName] = useState('');
   const [editing, setEditing] = useState(false);
-  const t = (fa: string, en: string) => lang === 'fa' ? fa : en;
+  const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
 
   return (
     <>
@@ -45,11 +45,17 @@ export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, t
 
         <div className="menu-divider" />
 
+        <button onClick={() => { newChat(); onClose(); }} className="menu-item" style={{ color: 'var(--red)' }}>
+          + {t('چت جدید', 'New Chat')}
+        </button>
+
+        <div className="menu-divider" />
+
         <div style={{ maxHeight: 200, overflowY: 'auto', marginBottom: 8 }}>
           {chats.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => switchChat(chat.id)}
+              onClick={() => { switchChat(chat.id); onClose(); }}
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -72,10 +78,6 @@ export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, t
             </div>
           ))}
         </div>
-
-        <button onClick={() => { newChat(); onClose(); }} className="menu-item" style={{ color: 'var(--red)' }}>
-          {t('چت جدید', 'New Chat')}
-        </button>
 
         <div className="menu-divider" />
         <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
