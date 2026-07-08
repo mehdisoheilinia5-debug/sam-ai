@@ -26,7 +26,6 @@ export default function Home() {
       fontFamily: 'var(--font-sans)',
       transition: 'all var(--transition)',
     }}>
-      {/* منو */}
       <SideMenu
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
@@ -36,13 +35,12 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      {/* هدر (فقط دکمه سه خط + اسم برنامه) */}
       <header className="header" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '24px',
-        padding: '12px 20px',
+        marginBottom: '16px',
+        padding: '8px 16px',
       }}>
         <button
           onClick={() => setMenuOpen(true)}
@@ -51,25 +49,24 @@ export default function Home() {
             border: 'none',
             color: 'var(--text-primary)',
             cursor: 'pointer',
-            fontSize: '24px',
+            fontSize: '22px',
             padding: '4px',
           }}
         >
           ☰
         </button>
         <h1 className="title-font" style={{
-          fontSize: 'clamp(26px, 5vw, 36px)',
+          fontSize: 'clamp(24px, 4.5vw, 32px)',
           fontWeight: '700',
           color: 'var(--red)',
           letterSpacing: '-0.5px',
         }}>
           SAM AI
         </h1>
-        <div style={{ width: '32px' }} /> {/* فضای خالی برای تراز */}
+        <div style={{ width: '32px' }} />
       </header>
 
-      {/* چت */}
-      <ChatInterface />
+      <ChatInterface lang={lang} />
     </div>
   );
 }
