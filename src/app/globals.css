@@ -16,6 +16,8 @@
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Fallback before the layout script runs; overwritten in JS with the real value */
+  --app-height: 100dvh;
 }
 
 body.light {
@@ -35,14 +37,20 @@ body.light {
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
+  height: var(--app-height);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  min-height: 100vh;
   transition: background var(--transition), color var(--transition);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {
