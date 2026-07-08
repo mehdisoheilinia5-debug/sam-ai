@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Providers from './contexts/Providers'
 
 export const metadata: Metadata = {
   title: 'SAM AI | دستیار هنری هوش مصنوعی',
@@ -17,9 +18,7 @@ export default function RootLayout({
         {/*
           Sets --app-height to the *real* visible viewport height in px,
           recalculated on resize / orientation change / browser toolbar
-          show-hide. This is more reliable than 100vh or 100dvh alone,
-          which can leave a gap or clip content on some mobile browsers
-          before the first scroll happens.
+          show-hide. More reliable on mobile than 100vh or 100dvh alone.
         */}
         <script
           dangerouslySetInnerHTML={{
@@ -40,7 +39,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
