@@ -2,17 +2,22 @@
 import { useState } from 'react';
 import { useChatHistory } from '../hooks/useChatHistory';
 
+type Message = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
 export default function ChatInterface() {
   const { getActiveChat, addMessage, newChat } = useChatHistory();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const activeChat = getActiveChat();
-  const messages = activeChat?.messages || [];
+  const messages: Message[] = activeChat?.messages || [];
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: input };
     addMessage(userMessage);
     setInput('');
     setLoading(true);
@@ -25,16 +30,17 @@ export default function ChatInterface() {
       });
 
       const data = await response.json();
-      const assistantMessage = {
+      const assistantMessage: Message = {
         role: 'assistant',
         content: data.reply || 'متاسفانه پاسخی دریافت نشد.'
       };
       addMessage(assistantMessage);
     } catch (error) {
-      addMessage({
+      const errorMessage: Message = {
         role: 'assistant',
         content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.'
-      });
+      };
+      addMessage(errorMessage);
     } finally {
       setLoading(false);
     }
