@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat:free',  // ← تغییر اصلی: اضافه کردن :free
+        model: 'google/gemini-2.0-flash-exp:free', // ← مدل رایگان Gemini
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
