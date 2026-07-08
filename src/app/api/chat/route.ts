@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'google/gemma-4-31b:free',
+        model: 'openrouter/free',
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
