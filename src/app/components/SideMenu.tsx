@@ -112,7 +112,7 @@ export default function SideMenu({
           className="menu-item"
           style={{ color: 'var(--red)' }}
         >
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>✚</span>
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>+</span>
           {t('چت جدید', 'New Chat')}
         </button>
 
@@ -120,7 +120,7 @@ export default function SideMenu({
 
         <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
           <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>
-            {isDark ? '☀️' : '🌙'}
+            {isDark ? '☀' : '☽'}
           </span>
           {t('تغییر تم', 'Theme')}
         </button>
@@ -140,7 +140,7 @@ export default function SideMenu({
             }
           }}
         >
-          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>🗑</span>
+          <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>⌫</span>
           {t('پاک کردن تاریخچه', 'Clear History')}
         </button>
       </div>
