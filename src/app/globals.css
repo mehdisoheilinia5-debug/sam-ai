@@ -8,11 +8,11 @@
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
   --border-color: rgba(139, 26, 26, 0.15);
-  --red: #8b1a1a;        /* ← تیره‌تر شد */
+  --red: #8b1a1a;
   --red-light: #a52a2a;
   --red-dark: #5c1010;
   --red-glow: rgba(139, 26, 26, 0.15);
-  --radius: 16px;
+  --radius: 14px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', system-ui, sans-serif;
@@ -29,8 +29,11 @@ body.light {
   --red-glow: rgba(139, 26, 26, 0.04);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -38,56 +41,67 @@ body {
   min-height: 100vh;
   transition: background var(--transition), color var(--transition);
 }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--red);
+  border-radius: 10px;
+}
+::selection {
+  background: var(--red);
+  color: #fff;
+}
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
-
-::selection { background: var(--red); color: #fff; }
-
-/* ===== منو ===== */
+/* Menu */
 .menu-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition);
 }
-.menu-overlay.open { opacity: 1; pointer-events: all; }
-
+.menu-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
 .menu-panel {
   position: fixed;
-  top: 0; bottom: 0;
+  top: 0;
+  bottom: 0;
   width: 280px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  padding: 24px 20px;
+  padding: 20px 16px;
   z-index: 110;
   transition: transform var(--transition);
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
-[dir="rtl"] .menu-panel {
+[dir='rtl'] .menu-panel {
   right: -280px;
   transform: translateX(0);
 }
-[dir="rtl"] .menu-panel.open {
+[dir='rtl'] .menu-panel.open {
   transform: translateX(-280px);
 }
-[dir="ltr"] .menu-panel {
+[dir='ltr'] .menu-panel {
   left: -280px;
   transform: translateX(0);
 }
-[dir="ltr"] .menu-panel.open {
+[dir='ltr'] .menu-panel.open {
   transform: translateX(280px);
 }
-
 .menu-item {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 10px;
   cursor: pointer;
   transition: all var(--transition);
@@ -98,26 +112,29 @@ body {
   font-weight: 500;
   width: 100%;
 }
-.menu-item:hover { background: var(--red-glow); }
-.menu-item.danger { color: #ef4444; }
-.menu-item.danger:hover { background: rgba(239,68,68,0.06); }
-
+.menu-item:hover {
+  background: var(--red-glow);
+}
+.menu-item.danger {
+  color: #ef4444;
+}
+.menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.06);
+}
 .menu-divider {
   height: 1px;
   background: var(--border-color);
-  margin: 8px 0;
+  margin: 6px 0;
 }
-
-/* ===== پروفایل ===== */
 .profile-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
+  padding: 14px;
   background: var(--red-glow);
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .profile-avatar {
   width: 44px;
@@ -131,8 +148,10 @@ body {
   font-weight: 700;
   color: #fff;
 }
-.profile-name { font-weight: 600; font-size: 15px; }
-.profile-username { font-size: 12px; opacity: 0.5; }
+.profile-name {
+  font-weight: 600;
+  font-size: 15px;
+}
 .profile-input {
   background: transparent;
   border: none;
@@ -144,59 +163,28 @@ body {
   padding: 4px 0;
   transition: border var(--transition);
 }
-.profile-input:focus { border-bottom-color: var(--red); }
+.profile-input:focus {
+  border-bottom-color: var(--red);
+}
 
-/* ===== کلاس‌های دیگر ===== */
-.card {
-  background: var(--bg-card);
+/* Header */
+.header {
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 24px;
   transition: all var(--transition);
 }
-.card:hover {
-  border-color: var(--red);
-  box-shadow: 0 0 40px var(--red-glow);
+.title-font {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
 }
 
-.btn-primary {
-  background: var(--red);
-  color: #fff;
-  border: none;
-  padding: 10px 28px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.btn-primary:hover {
-  background: var(--red-light);
-  transform: scale(1.02);
-  box-shadow: 0 0 30px var(--red-glow);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  padding: 10px 28px;
-  border-radius: 30px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.btn-secondary:hover {
-  border-color: var(--red);
-  background: var(--red-glow);
-}
-
+/* Input & Button */
 .input-field {
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 24px;
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
@@ -209,35 +197,19 @@ body {
   box-shadow: 0 0 20px var(--red-glow);
 }
 
-.header {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 14px 24px;
-  transition: all var(--transition);
-}
-
-.title-font {
-  font-family: var(--font-serif);
-  letter-spacing: -0.02em;
-}
-
-.text-red { color: var(--red); }
-.bg-red { background: var(--red); }
-
-.header-subtitle {
-  display: none;
-  font-size: 14px;
-  opacity: 0.5;
-}
-
-@media (min-width: 500px) {
-  .header-subtitle { display: inline; }
-}
-
 @media (max-width: 600px) {
-  .card { padding: 16px; }
-  .header { padding: 10px 16px; }
-  .btn-primary, .btn-secondary { padding: 8px 20px; font-size: 13px; }
-  .menu-panel { width: 260px; }
+  .menu-panel {
+    width: 260px;
+    padding: 16px 12px;
+  }
+  .header {
+    padding: 6px 10px;
+  }
+  .profile-card {
+    padding: 10px;
+  }
+  .menu-item {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
 }
