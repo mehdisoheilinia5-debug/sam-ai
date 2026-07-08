@@ -7,11 +7,12 @@
   --bg-input: #0d0d0d;
   --text-primary: #f5f5f5;
   --text-secondary: #888888;
-  --border-color: rgba(139, 26, 26, 0.2);
-  --red: #8b1a1a;
-  --red-light: #a52a2a;
-  --red-dark: #5c1010;
-  --red-glow: rgba(139, 26, 26, 0.15);
+  --border-color: rgba(109, 15, 31, 0.2);
+  --red: #6d0f1f;
+  --red-light: #9c1830;
+  --red-dark: #3c0812;
+  --red-glow: rgba(109, 15, 31, 0.16);
+  --red-gradient: linear-gradient(135deg, #9c1830 0%, #4a0916 100%);
   --radius: 14px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: 'Playfair Display', serif;
@@ -27,8 +28,8 @@ body.light {
   --bg-input: #f0f0f0;
   --text-primary: #1a1a1a;
   --text-secondary: #666666;
-  --border-color: rgba(139, 26, 26, 0.08);
-  --red-glow: rgba(139, 26, 26, 0.04);
+  --border-color: rgba(109, 15, 31, 0.08);
+  --red-glow: rgba(109, 15, 31, 0.05);
 }
 
 * {
@@ -223,6 +224,75 @@ body {
 .input-field:focus {
   border-color: var(--red);
   box-shadow: 0 0 20px var(--red-glow);
+}
+
+/* ===== دکمه ارسال ===== */
+.send-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--red-gradient);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+}
+.send-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+.send-button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.send-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.send-icon {
+  display: inline-flex;
+}
+[dir='rtl'] .send-icon {
+  transform: scaleX(-1);
+}
+
+/* ===== لوگوی هدر ===== */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-mark {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--red-light), var(--red-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.brand-sub {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 3px;
+  opacity: 0.8;
 }
 
 @media (max-width: 600px) {
