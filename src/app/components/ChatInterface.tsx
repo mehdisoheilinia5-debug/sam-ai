@@ -1,23 +1,19 @@
 'use client';
 import { useState } from 'react';
-
-type Message = {
-  role: 'user' | 'assistant';
-  content: string;
-};
+import { useChatHistory } from '../hooks/useChatHistory';
 
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'سلام! من SAM AI هستم، دستیار هنری تو. چطور می‌تونم کمکت کنم؟ 🎭' }
-  ]);
+  const { getActiveChat, addMessage, newChat } = useChatHistory();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const activeChat = getActiveChat();
+  const messages = activeChat?.messages || [];
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const userMessage = { role: 'user', content: input };
+    addMessage(userMessage);
     setInput('');
     setLoading(true);
 
@@ -29,17 +25,16 @@ export default function ChatInterface() {
       });
 
       const data = await response.json();
-      
-      const assistantMessage: Message = { 
-        role: 'assistant', 
-        content: data.reply || 'متاسفانه پاسخی دریافت نشد.' 
+      const assistantMessage = {
+        role: 'assistant',
+        content: data.reply || 'متاسفانه پاسخی دریافت نشد.'
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+      addMessage(assistantMessage);
     } catch (error) {
-      setMessages((prev) => [...prev, { 
-        role: 'assistant', 
-        content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.' 
-      }]);
+      addMessage({
+        role: 'assistant',
+        content: '❌ خطا در ارتباط با سرور. دوباره تلاش کن.'
+      });
     } finally {
       setLoading(false);
     }
@@ -90,11 +85,19 @@ export default function ChatInterface() {
           onClick={sendMessage}
           disabled={loading}
           className="btn-primary"
-          style={{ padding: '12px 24px', fontSize: '15px', whiteSpace: 'nowrap' }}
+          style={{
+            padding: '12px 20px',
+            fontSize: '18px',
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '52px',
+          }}
         >
-          {loading ? '...' : 'ارسال'}
+          {loading ? '...' : '➤'}
         </button>
       </div>
     </div>
   );
-} 
+}
