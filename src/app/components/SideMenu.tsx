@@ -112,7 +112,7 @@ export default function SideMenu({
           className="menu-item"
           style={{ color: 'var(--red)' }}
         >
-          ➕ {t('چت جدید', 'New Chat')}
+          <span style={{ fontSize: '16px' }}>✚</span> {t('چت جدید', 'New Chat')}
         </button>
 
         <div className="menu-divider" />
@@ -121,7 +121,7 @@ export default function SideMenu({
           {isDark ? '☀️' : '🌙'} {t('تغییر تم', 'Theme')}
         </button>
         <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
-          🌐 {lang === 'fa' ? 'English' : 'فارسی'}
+          <span style={{ fontSize: '16px' }}>🌐</span> {lang === 'fa' ? 'English' : 'فارسی'}
         </button>
 
         <div className="menu-divider" />
@@ -129,11 +129,13 @@ export default function SideMenu({
         <button
           className="menu-item danger"
           onClick={() => {
-            localStorage.removeItem('sam_ai_chats');
-            window.location.reload();
+            if (confirm(t('همه چت‌ها پاک میشن. ادامه میدی؟', 'All chats will be deleted. Continue?'))) {
+              localStorage.removeItem('sam_ai_chats');
+              window.location.reload();
+            }
           }}
         >
-          🗑️ {t('پاک کردن تاریخچه', 'Clear History')}
+          <span style={{ fontSize: '16px' }}>🗑</span> {t('پاک کردن تاریخچه', 'Clear History')}
         </button>
       </div>
     </>
