@@ -4,23 +4,22 @@ import { SAM_SYSTEM_PROMPT } from '@/lib/prompts';
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
+    const apiKey = process.env.OPENROUTER_API_KEY; // ← اسم متغیر عوض شد
 
-    const apiKey = process.env.DEEPSEEK_API_KEY;
-    
     if (!apiKey) {
       return NextResponse.json({
-        reply: '⚠️ کلید API تنظیم نشده. لطفاً DEEPSEEK_API_KEY رو تنظیم کن.'
+        reply: '⚠️ کلید OpenRouter تنظیم نشده.'
       });
     }
 
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'deepseek/deepseek-chat', // ← مدل DeepSeek از طریق OpenRouter
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
@@ -34,16 +33,16 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       return NextResponse.json({
-        reply: `❌ خطای API: ${data.error?.message || 'مشکل در ارتباط با DeepSeek'}`
+        reply: `❌ خطا: ${data.error?.message || 'مشکل در ارتباط با OpenRouter'}`
       });
     }
 
-    const reply = data.choices?.[0]?.message?.content || 'متاسفانه پاسخی دریافت نشد.';
+    const reply = data.choices?.[0]?.message?.content || 'پاسخی دریافت نشد.';
     return NextResponse.json({ reply });
 
   } catch (error: any) {
     return NextResponse.json({
-      reply: `❌ خطای سرور: ${error.message || 'مشکل ناشناخته'}`
+      reply: `❌ خطا: ${error.message || 'مشکل ناشناخته'}`
     });
   }
 }
