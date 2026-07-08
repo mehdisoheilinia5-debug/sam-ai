@@ -36,51 +36,36 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      {/* هدر */}
+      {/* هدر (فقط دکمه سه خط + اسم برنامه) */}
       <header className="header" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '24px',
+        padding: '12px 20px',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
-            onClick={() => setMenuOpen(true)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              fontSize: '24px',
-              padding: '4px',
-            }}
-          >
-            ☰
-          </button>
-          <h1 className="title-font" style={{
-            fontSize: 'clamp(22px, 4vw, 30px)',
-            fontWeight: '700',
-            color: 'var(--red)',
-          }}>
-            SAM AI
-          </h1>
-          <span className="header-subtitle">دستیار هنری</span>
-        </div>
         <button
-          onClick={() => setIsDark(!isDark)}
+          onClick={() => setMenuOpen(true)}
           style={{
-            background: 'var(--bg-input)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '30px',
-            padding: '6px 14px',
+            background: 'none',
+            border: 'none',
             color: 'var(--text-primary)',
             cursor: 'pointer',
-            fontSize: '14px',
-            transition: 'all var(--transition)',
+            fontSize: '24px',
+            padding: '4px',
           }}
         >
-          {isDark ? '☀️' : '🌙'}
+          ☰
         </button>
+        <h1 className="title-font" style={{
+          fontSize: 'clamp(26px, 5vw, 36px)',
+          fontWeight: '700',
+          color: 'var(--red)',
+          letterSpacing: '-0.5px',
+        }}>
+          SAM AI
+        </h1>
+        <div style={{ width: '32px' }} /> {/* فضای خالی برای تراز */}
       </header>
 
       {/* چت */}
