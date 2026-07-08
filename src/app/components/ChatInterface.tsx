@@ -7,7 +7,7 @@ interface ChatInterfaceProps {
 }
 
 export default function ChatInterface({ lang }: ChatInterfaceProps) {
-  const { getActiveChat, addMessage } = useChatHistory();
+  const { getActiveChat, addMessage, activeChatId } = useChatHistory();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -19,8 +19,10 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
     const chat = getActiveChat();
     if (chat) {
       setMessages(chat.messages);
+    } else {
+      setMessages([]);
     }
-  }, [getActiveChat]);
+  }, [activeChatId, getActiveChat]); // ← وابستگی به activeChatId اضافه شد
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -68,7 +70,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: 'calc(100vh - 110px)',
+        height: 'calc(100vh - 120px)',
         maxWidth: '720px',
         margin: '0 auto',
         padding: '0 10px',
