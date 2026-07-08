@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import ChatInterface from './components/ChatInterface';
@@ -67,6 +66,7 @@ export default function Home() {
             cursor: 'pointer',
             fontSize: '22px',
             padding: '4px',
+            fontWeight: '300',
           }}
         >
           ☰
