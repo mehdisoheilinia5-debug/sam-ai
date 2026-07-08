@@ -68,23 +68,24 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: 'calc(100vh - 120px)',
+        height: 'calc(100vh - 118px)',
         maxWidth: '720px',
         margin: '0 auto',
-        padding: '0 12px',
+        padding: '0 10px',
+        position: 'relative',
       }}
     >
-      {/* ناحیه پیام‌ها - اسکرول‌پذیر */}
+      {/* ناحیه پیام‌ها */}
       <div
         style={{
           flex: 1,
           background: 'var(--bg-card)',
           borderRadius: 'var(--radius)',
-          padding: '16px',
+          padding: '14px',
           overflowY: 'auto',
           border: '1px solid var(--border-color)',
           marginBottom: '10px',
-          minHeight: '100px',
+          minHeight: '80px',
         }}
       >
         {!hasMessages ? (
@@ -100,14 +101,14 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
               padding: '20px',
             }}
           >
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎭</div>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '6px' }}>
+            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🎭</div>
+            <h3 style={{ fontSize: '17px', fontWeight: '600', marginBottom: '4px', color: 'var(--text-primary)' }}>
               {t('به SAM AI خوش آمدید', 'Welcome to SAM AI')}
             </h3>
-            <p style={{ fontSize: '14px', opacity: 0.6, maxWidth: '300px' }}>
+            <p style={{ fontSize: '13px', opacity: 0.5, maxWidth: '280px' }}>
               {t(
-                'دستیار هنری شما برای تحلیل شخصیت، نوشتن نمایشنامه و ایده‌پردازی',
-                'Your artistic assistant for character analysis, playwriting, and ideation'
+                'دستیار هنری شما برای تحلیل شخصیت، نوشتن و ایده‌پردازی',
+                'Your artistic assistant for analysis, writing, and ideation'
               )}
             </p>
           </div>
@@ -146,7 +147,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
           ))
         )}
         {loading && (
-          <div style={{ textAlign: 'left', opacity: 0.5, fontSize: '13px' }}>
+          <div style={{ textAlign: 'left', opacity: 0.5, fontSize: '13px', marginTop: '4px' }}>
             SAM {t('در حال تایپ...', 'is typing...')}
           </div>
         )}
