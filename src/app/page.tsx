@@ -23,9 +23,12 @@ export default function Home() {
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         color: 'var(--text-primary)',
-        padding: '12px 10px',
+        padding: '10px 8px 0 8px',
         fontFamily: 'var(--font-sans)',
         transition: 'all var(--transition)',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
       <SideMenu
@@ -37,18 +40,16 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
+      {/* هدر ثابت */}
       <header
         className="header"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '14px',
-          padding: '6px 14px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          background: 'var(--bg-secondary)',
+          padding: '6px 12px',
+          marginBottom: '10px',
+          flexShrink: 0,
         }}
       >
         <button
@@ -78,7 +79,10 @@ export default function Home() {
         <div style={{ width: '32px' }} />
       </header>
 
-      <ChatInterface lang={lang} />
+      {/* چت - بقیه فضای صفحه رو پر میکنه */}
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <ChatInterface lang={lang} />
+      </div>
     </div>
   );
 }
