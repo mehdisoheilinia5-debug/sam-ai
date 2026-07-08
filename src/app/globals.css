@@ -7,11 +7,11 @@
   --bg-input: #1a1a1a;
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
-  --border-color: rgba(180, 30, 30, 0.15);
-  --red: #b91c1c;
-  --red-light: #dc2626;
-  --red-dark: #7f1d1d;
-  --red-glow: rgba(185, 28, 28, 0.15);
+  --border-color: rgba(139, 26, 26, 0.15);
+  --red: #8b1a1a;        /* ← تیره‌تر شد */
+  --red-light: #a52a2a;
+  --red-dark: #5c1010;
+  --red-glow: rgba(139, 26, 26, 0.15);
   --radius: 16px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: 'Playfair Display', serif;
@@ -25,8 +25,8 @@ body.light {
   --bg-input: #f0f0f0;
   --text-primary: #1a1a1a;
   --text-secondary: #555;
-  --border-color: rgba(180, 30, 30, 0.1);
-  --red-glow: rgba(185, 28, 28, 0.04);
+  --border-color: rgba(139, 26, 26, 0.1);
+  --red-glow: rgba(139, 26, 26, 0.04);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,6 +44,109 @@ body {
 
 ::selection { background: var(--red); color: #fff; }
 
+/* ===== منو ===== */
+.menu-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.menu-overlay.open { opacity: 1; pointer-events: all; }
+
+.menu-panel {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 280px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 24px 20px;
+  z-index: 110;
+  transition: transform var(--transition);
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+[dir="rtl"] .menu-panel {
+  right: -280px;
+  transform: translateX(0);
+}
+[dir="rtl"] .menu-panel.open {
+  transform: translateX(-280px);
+}
+[dir="ltr"] .menu-panel {
+  left: -280px;
+  transform: translateX(0);
+}
+[dir="ltr"] .menu-panel.open {
+  transform: translateX(280px);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+}
+.menu-item:hover { background: var(--red-glow); }
+.menu-item.danger { color: #ef4444; }
+.menu-item.danger:hover { background: rgba(239,68,68,0.06); }
+
+.menu-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 8px 0;
+}
+
+/* ===== پروفایل ===== */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--red-glow);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.profile-name { font-weight: 600; font-size: 15px; }
+.profile-username { font-size: 12px; opacity: 0.5; }
+.profile-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  padding: 4px 0;
+  transition: border var(--transition);
+}
+.profile-input:focus { border-bottom-color: var(--red); }
+
+/* ===== کلاس‌های دیگر ===== */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -122,7 +225,6 @@ body {
 .text-red { color: var(--red); }
 .bg-red { background: var(--red); }
 
-/* ===== کلاس جدید برای subtitle ===== */
 .header-subtitle {
   display: none;
   font-size: 14px;
@@ -130,13 +232,12 @@ body {
 }
 
 @media (min-width: 500px) {
-  .header-subtitle {
-    display: inline;
-  }
+  .header-subtitle { display: inline; }
 }
 
 @media (max-width: 600px) {
   .card { padding: 16px; }
   .header { padding: 10px 16px; }
   .btn-primary, .btn-secondary { padding: 8px 20px; font-size: 13px; }
+  .menu-panel { width: 260px; }
 }
