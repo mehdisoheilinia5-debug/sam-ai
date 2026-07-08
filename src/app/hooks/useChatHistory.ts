@@ -84,7 +84,7 @@ export function useChatHistory() {
 
   return {
     chats,
-    activeChatId,
+    activeChatId, // ← این رو برگردوندم تا بتونیم توی ChatInterface ازش استفاده کنیم
     getActiveChat,
     addMessage,
     newChat,
