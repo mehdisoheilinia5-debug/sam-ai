@@ -68,7 +68,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: 'calc(100vh - 130px)',
+        height: 'calc(100vh - 110px)',
         maxWidth: '720px',
         margin: '0 auto',
         padding: '0 10px',
