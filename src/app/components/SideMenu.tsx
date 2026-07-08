@@ -23,7 +23,7 @@ export default function SideMenu({
   const [profileName, setProfileName] = useState('کاربر');
   const [editingName, setEditingName] = useState(false);
 
-  const t = (fa: string, en: string) => lang === 'fa' ? fa : en;
+  const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
 
   return (
     <>
@@ -44,7 +44,11 @@ export default function SideMenu({
                 placeholder={t('اسمت رو وارد کن', 'Enter your name')}
               />
             ) : (
-              <div className="profile-name" onClick={() => setEditingName(true)} style={{ cursor: 'pointer' }}>
+              <div
+                className="profile-name"
+                onClick={() => setEditingName(true)}
+                style={{ cursor: 'pointer' }}
+              >
                 {profileName || t('کاربر', 'User')} ✏️
               </div>
             )}
@@ -69,11 +73,22 @@ export default function SideMenu({
                 transition: 'all var(--transition)',
               }}
             >
-              <span style={{ fontSize: '13px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+              <span
+                style={{
+                  fontSize: '13px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  flex: 1,
+                }}
+              >
                 {chat.title || t('چت جدید', 'New Chat')}
               </span>
               <button
-                onClick={(e) => { e.stopPropagation(); deleteChat(chat.id); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteChat(chat.id);
+                }}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -90,7 +105,10 @@ export default function SideMenu({
         </div>
 
         <button
-          onClick={() => { newChat(); onClose(); }}
+          onClick={() => {
+            newChat();
+            onClose();
+          }}
           className="menu-item"
           style={{ color: 'var(--red)' }}
         >
@@ -104,6 +122,18 @@ export default function SideMenu({
         </button>
         <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
           🌐 {lang === 'fa' ? 'English' : 'فارسی'}
+        </button>
+
+        <div className="menu-divider" />
+
+        <button
+          className="menu-item danger"
+          onClick={() => {
+            localStorage.removeItem('sam_ai_chats');
+            window.location.reload();
+          }}
+        >
+          🗑️ {t('پاک کردن تاریخچه', 'Clear History')}
         </button>
       </div>
     </>
