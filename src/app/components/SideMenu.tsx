@@ -1,43 +1,87 @@
 'use client';
 import { useState } from 'react';
 import { useChatHistory } from '../contexts/ChatHistoryContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useSettings } from '../contexts/SettingsContext';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  isDark: boolean;
-  toggleTheme: () => void;
-  lang: string;
-  toggleLang: () => void;
 }
 
-export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, toggleLang }: Props) {
+export default function SideMenu({ isOpen, onClose }: Props) {
   const { chats, activeChatId, switchChat, newChat, deleteChat } = useChatHistory();
-  const [name, setName] = useState('');
+  const { user, updateProfile, logOut } = useAuth();
+  const { lang, toggleTheme, toggleLang, t } = useSettings();
+
+  const currentDisplayName = (user?.user_metadata?.display_name as string) || user?.email || t('کاربر', 'User');
+
   const [editing, setEditing] = useState(false);
-  const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
+  const [displayName, setDisplayName] = useState(currentDisplayName);
+  const [newPassword, setNewPassword] = useState('');
+
+  const startEditing = () => {
+    setDisplayName(currentDisplayName);
+    setNewPassword('');
+    setEditing(true);
+  };
+
+  const saveProfile = async () => {
+    await updateProfile(displayName, newPassword || undefined);
+    setNewPassword('');
+    setEditing(false);
+  };
 
   return (
     <>
       <div className={`menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`menu-panel ${isOpen ? 'open' : ''}`}>
         <div className="profile-card">
-          <div className="profile-avatar">{name ? name[0].toUpperCase() : '?'}</div>
-          <div style={{ flex: 1 }}>
+          <div className="profile-avatar">{currentDisplayName[0]?.toUpperCase() || '?'}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             {editing ? (
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onBlur={() => setEditing(false)}
-                onKeyDown={(e) => e.key === 'Enter' && setEditing(false)}
-                className="profile-input"
-                autoFocus
-                placeholder={t('نام کاربری', 'Username')}
-              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <input
+                  className="profile-input"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder={t('نام نمایشی', 'Display name')}
+                  autoFocus
+                />
+                <input
+                  className="profile-input"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder={t('رمز عبور جدید (اختیاری)', 'New password (optional)')}
+                />
+                <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
+                  <button
+                    onClick={saveProfile}
+                    style={{ background: 'none', border: 'none', color: 'var(--red-light)', fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                  >
+                    {t('ذخیره', 'Save')}
+                  </button>
+                  <button
+                    onClick={() => setEditing(false)}
+                    style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: 12, cursor: 'pointer', padding: 0 }}
+                  >
+                    {t('انصراف', 'Cancel')}
+                  </button>
+                </div>
+              </div>
             ) : (
-              <div className="profile-name" onClick={() => setEditing(true)} style={{ cursor: 'pointer' }}>
-                {name || t('نام کاربری', 'Username')} ✎
+              <div>
+                <div className="profile-name">{currentDisplayName}</div>
+                {user?.email && (
+                  <div style={{ fontSize: 11, color: 'var(--text-secondary)', opacity: 0.7 }}>{user.email}</div>
+                )}
+                <button
+                  onClick={startEditing}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: 11, cursor: 'pointer', padding: 0, marginTop: 2 }}
+                >
+                  {t('ویرایش اطلاعات کاربری ✎', 'Edit profile ✎')}
+                </button>
               </div>
             )}
           </div>
@@ -45,7 +89,7 @@ export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, t
 
         <div className="menu-divider" />
 
-        <button onClick={() => { newChat(); onClose(); }} className="menu-item" style={{ color: 'var(--red)' }}>
+        <button onClick={() => { newChat(); onClose(); }} className="menu-item" style={{ color: 'var(--red-light)' }}>
           + {t('چت جدید', 'New Chat')}
         </button>
 
@@ -80,14 +124,17 @@ export default function SideMenu({ isOpen, onClose, isDark, toggleTheme, lang, t
         </div>
 
         <div className="menu-divider" />
-        <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
+        <button className="menu-item" onClick={toggleTheme}>
           {t('تغییر تم', 'Theme')}
         </button>
-        <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
+        <button className="menu-item" onClick={toggleLang}>
           {lang === 'fa' ? 'English' : 'فارسی'}
         </button>
 
         <div className="menu-divider" />
+        <button className="menu-item" onClick={logOut}>
+          {t('خروج از حساب', 'Log out')}
+        </button>
         <button
           className="menu-item danger"
           onClick={() => {
