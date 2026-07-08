@@ -4,6 +4,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 export type Message = { role: 'user' | 'assistant'; content: string };
 export type Chat = { id: string; title: string; messages: Message[]; createdAt: string };
 
+const STORAGE_KEY = 'sam_ai_chats';
+
 interface ChatHistoryValue {
   chats: Chat[];
   activeChatId: string | null;
@@ -25,37 +27,52 @@ function createDefaultChat(): Chat {
   };
 }
 
+function persist(chats: Chat[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+  } catch {
+    // e.g. private browsing / storage full — fail silently rather than crash
+  }
+}
+
 export function ChatHistoryProvider({ children }: { children: ReactNode }) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
 
-  // Load once on mount
+  // On first load: restore saved chats, or immediately create AND persist a
+  // brand new chat. The user should never need to press "New Chat" for the
+  // very first conversation to exist and be saved.
   useEffect(() => {
-    const saved = localStorage.getItem('sam_ai_chats');
-    if (saved) {
-      const parsed: Chat[] = JSON.parse(saved);
-      setChats(parsed);
-      if (parsed.length > 0) setActiveId(parsed[0].id);
-    } else {
-      const defaultChat = createDefaultChat();
-      setChats([defaultChat]);
-      setActiveId(defaultChat.id);
+    let initialChats: Chat[];
+    let initialActiveId: string;
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : null;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        initialChats = parsed;
+        initialActiveId = parsed[0].id;
+      } else {
+        const chat = createDefaultChat();
+        initialChats = [chat];
+        initialActiveId = chat.id;
+      }
+    } catch {
+      const chat = createDefaultChat();
+      initialChats = [chat];
+      initialActiveId = chat.id;
     }
-    setLoaded(true);
+    setChats(initialChats);
+    setActiveId(initialActiveId);
+    persist(initialChats);
   }, []);
-
-  // Persist whenever chats change (but not before the initial load finishes,
-  // otherwise the very first render would overwrite localStorage with [])
-  useEffect(() => {
-    if (loaded) localStorage.setItem('sam_ai_chats', JSON.stringify(chats));
-  }, [chats, loaded]);
 
   const getActiveChat = () => chats.find((c) => c.id === activeId) || null;
 
+  // Every mutation persists immediately and synchronously — saving no
+  // longer depends on a separate effect or on any button being pressed.
   const addMessage = (msg: Message) => {
-    setChats((prev) =>
-      prev.map((chat) => {
+    setChats((prev) => {
+      const updated = prev.map((chat) => {
         if (chat.id === activeId) {
           const isFirstUserMsg = chat.messages.length <= 1 && msg.role === 'user';
           return {
@@ -65,13 +82,19 @@ export function ChatHistoryProvider({ children }: { children: ReactNode }) {
           };
         }
         return chat;
-      })
-    );
+      });
+      persist(updated);
+      return updated;
+    });
   };
 
   const newChat = () => {
     const chat = createDefaultChat();
-    setChats((prev) => [chat, ...prev]);
+    setChats((prev) => {
+      const updated = [chat, ...prev];
+      persist(updated);
+      return updated;
+    });
     setActiveId(chat.id);
   };
 
@@ -80,6 +103,7 @@ export function ChatHistoryProvider({ children }: { children: ReactNode }) {
   const deleteChat = (id: string) => {
     setChats((prev) => {
       const remaining = prev.filter((c) => c.id !== id);
+      persist(remaining);
       if (activeId === id) {
         setActiveId(remaining.length > 0 ? remaining[0].id : null);
       }
