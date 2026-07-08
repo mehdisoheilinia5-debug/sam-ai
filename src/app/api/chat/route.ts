@@ -4,7 +4,7 @@ import { SAM_SYSTEM_PROMPT } from '@/lib/prompts';
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-    const apiKey = process.env.OPENROUTER_API_KEY; // ← اسم متغیر عوض شد
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat', // ← مدل DeepSeek از طریق OpenRouter
+        model: 'deepseek/deepseek-chat',
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
