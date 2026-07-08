@@ -20,7 +20,7 @@ export default function SideMenu({
   toggleLang,
 }: SideMenuProps) {
   const { chats, activeChatId, switchChat, newChat, deleteChat } = useChatHistory();
-  const [profileName, setProfileName] = useState('کاربر');
+  const [profileName, setProfileName] = useState('');
   const [editingName, setEditingName] = useState(false);
 
   const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
@@ -30,7 +30,9 @@ export default function SideMenu({
       <div className={`menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`menu-panel ${isOpen ? 'open' : ''}`}>
         <div className="profile-card">
-          <div className="profile-avatar">{profileName.charAt(0).toUpperCase()}</div>
+          <div className="profile-avatar">
+            {profileName ? profileName.charAt(0).toUpperCase() : '?'}
+          </div>
           <div style={{ flex: 1 }}>
             {editingName ? (
               <input
@@ -41,7 +43,7 @@ export default function SideMenu({
                 onKeyDown={(e) => e.key === 'Enter' && setEditingName(false)}
                 className="profile-input"
                 autoFocus
-                placeholder={t('اسمت رو وارد کن', 'Enter your name')}
+                placeholder={t('نام کاربری', 'Username')}
               />
             ) : (
               <div
@@ -49,7 +51,7 @@ export default function SideMenu({
                 onClick={() => setEditingName(true)}
                 style={{ cursor: 'pointer' }}
               >
-                {profileName || t('کاربر', 'User')}
+                {profileName || t('نام کاربری', 'Username')} ✎
               </div>
             )}
           </div>
