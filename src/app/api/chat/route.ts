@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct:free',
+        model: 'nvidia/nemotron-3-ultra:free',
         messages: [
           { role: 'system', content: SAM_SYSTEM_PROMPT },
           ...messages
