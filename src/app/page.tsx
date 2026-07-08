@@ -74,17 +74,32 @@ export default function Home() {
           >
             ☰
           </button>
-          <h1
-            style={{
-              fontSize: 'clamp(26px, 5vw, 34px)',
-              fontWeight: 700,
-              color: 'var(--red)',
-              letterSpacing: '-0.5px',
-              fontFamily: 'var(--font-serif)',
-            }}
-          >
-            SAM AI
-          </h1>
+          <div className="brand-logo">
+            <svg className="brand-mark" width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+              <defs>
+                <linearGradient id="samMarkGradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="var(--red-light)" />
+                  <stop offset="100%" stopColor="var(--red-dark)" />
+                </linearGradient>
+              </defs>
+              <rect width="40" height="40" rx="11" fill="url(#samMarkGradient)" />
+              <text
+                x="20"
+                y="28"
+                textAnchor="middle"
+                fontFamily="var(--font-serif)"
+                fontSize="20"
+                fontWeight="700"
+                fill="#f5f5f5"
+              >
+                S
+              </text>
+            </svg>
+            <div className="brand-text">
+              <span className="brand-title">SAM AI</span>
+              <span className="brand-sub">{lang === 'fa' ? 'دستیار هنری تئاتر' : 'Theatre Arts Assistant'}</span>
+            </div>
+          </div>
           <div style={{ width: 32 }} />
         </header>
 
