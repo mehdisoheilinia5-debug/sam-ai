@@ -15,14 +15,11 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
 
   const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
 
+  // ===== هر وقت activeChatId عوض شد، پیام‌ها رو آپدیت کن =====
   useEffect(() => {
     const chat = getActiveChat();
-    if (chat) {
-      setMessages(chat.messages);
-    } else {
-      setMessages([]);
-    }
-  }, [activeChatId, getActiveChat]); // ← وابستگی به activeChatId اضافه شد
+    setMessages(chat?.messages || []);
+  }, [activeChatId, getActiveChat]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -41,7 +38,9 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({
+          messages: [...messages, userMessage],
+        }),
       });
 
       const data = await response.json();
@@ -51,7 +50,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
       };
       setMessages((prev) => [...prev, assistantMessage]);
       addMessage(assistantMessage);
-    } catch (error) {
+    } catch {
       const errorMessage: Message = {
         role: 'assistant',
         content: t('خطا در ارتباط با سرور. دوباره تلاش کن.', 'Server error. Please try again.'),
@@ -74,7 +73,6 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
         maxWidth: '720px',
         margin: '0 auto',
         padding: '0 10px',
-        position: 'relative',
       }}
     >
       <div
