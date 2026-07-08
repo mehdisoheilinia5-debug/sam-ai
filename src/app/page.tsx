@@ -45,6 +45,10 @@ export default function Home() {
           alignItems: 'center',
           marginBottom: '14px',
           padding: '6px 14px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          background: 'var(--bg-secondary)',
         }}
       >
         <button
