@@ -52,7 +52,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
     } catch (error) {
       const errorMessage: Message = {
         role: 'assistant',
-        content: t('❌ خطا در ارتباط با سرور. دوباره تلاش کن.', '❌ Server connection error. Please try again.'),
+        content: t('خطا در ارتباط با سرور. دوباره تلاش کن.', 'Server error. Please try again.'),
       };
       setMessages((prev) => [...prev, errorMessage]);
       addMessage(errorMessage);
@@ -75,7 +75,6 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
         position: 'relative',
       }}
     >
-      {/* ناحیه پیام‌ها */}
       <div
         style={{
           flex: 1,
@@ -101,7 +100,6 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
               padding: '20px',
             }}
           >
-            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🎭</div>
             <h3 style={{ fontSize: '17px', fontWeight: '600', marginBottom: '4px', color: 'var(--text-primary)' }}>
               {t('به SAM AI خوش آمدید', 'Welcome to SAM AI')}
             </h3>
@@ -154,7 +152,6 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* کادر تایپ - ثابت در پایین */}
       <div
         style={{
           display: 'flex',
@@ -197,7 +194,7 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
             opacity: loading ? 0.5 : 1,
           }}
         >
-          {loading ? '...' : '➤'}
+          {loading ? '...' : '>'}
         </button>
       </div>
     </div>
