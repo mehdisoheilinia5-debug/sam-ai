@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* حالت تیره - مشکی خالص */
   --bg-primary: #000000;
   --bg-secondary: #0a0a0a;
   --bg-card: #080808;
@@ -19,7 +18,6 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* حالت روشن - سفید تمیز */
 body.light {
   --bg-primary: #f8f8f8;
   --bg-secondary: #ffffff;
@@ -47,7 +45,6 @@ body {
   overflow: hidden;
 }
 
-/* ===== اسکرول بار ===== */
 ::-webkit-scrollbar {
   width: 3px;
   height: 3px;
@@ -60,7 +57,6 @@ body {
   border-radius: 10px;
 }
 
-/* ===== انتخاب متن ===== */
 ::selection {
   background: var(--red);
   color: #ffffff;
@@ -143,7 +139,6 @@ body {
   margin: 6px 0;
 }
 
-/* ===== پروفایل ===== */
 .profile-card {
   display: flex;
   align-items: center;
@@ -222,7 +217,6 @@ body {
   box-shadow: 0 0 20px var(--red-glow);
 }
 
-/* ===== ریسپانسیو ===== */
 @media (max-width: 600px) {
   .menu-panel {
     width: 260px;
