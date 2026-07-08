@@ -1,19 +1,45 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useChatHistory, type Message } from '../contexts/ChatHistoryContext';
+import { useSettings } from '../contexts/SettingsContext';
 
-interface Props { lang: string; }
+function CopyButton({ text, label }: { text: string; label: string }) {
+  const [copied, setCopied] = useState(false);
 
-export default function ChatInterface({ lang }: Props) {
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // clipboard API unavailable — silently ignore
+    }
+  };
+
+  return (
+    <button onClick={handleCopy} className="copy-button" aria-label={label} type="button">
+      {copied ? (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      ) : (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      )}
+    </button>
+  );
+}
+
+export default function ChatInterface() {
   const { getActiveChat, addMessage, activeChatId } = useChatHistory();
+  const { lang, t } = useSettings();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
 
-  const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
-
-  // Re-syncs local view whenever the active chat changes (new chat / switch chat)
   useEffect(() => {
     const chat = getActiveChat();
     setMessages(chat?.messages || []);
@@ -39,7 +65,7 @@ export default function ChatInterface({ lang }: Props) {
       const data = await res.json();
       const assistant: Message = {
         role: 'assistant',
-        content: data.reply || t('پاسخی دریافت نشد.', 'No response.'),
+        content: data.reply || t('پاسخی دریافت نشد.', 'No response received.'),
       };
       setMessages((prev) => [...prev, assistant]);
       addMessage(assistant);
@@ -53,8 +79,6 @@ export default function ChatInterface({ lang }: Props) {
     }
   };
 
-  // Assistant bubbles sit on the opposite side from user bubbles, and the
-  // typing indicator must use the same side as assistant bubbles.
   const assistantAlign = lang === 'fa' ? 'left' : 'right';
   const userAlign = lang === 'fa' ? 'right' : 'left';
 
@@ -123,13 +147,18 @@ export default function ChatInterface({ lang }: Props) {
               >
                 {msg.content}
               </div>
+              {msg.role === 'assistant' && (
+                <div>
+                  <CopyButton text={msg.content} label={t('کپی پیام', 'Copy message')} />
+                </div>
+              )}
             </div>
           ))
         )}
         {loading && (
           <div style={{ textAlign: assistantAlign, marginBottom: 8 }}>
             <div style={{ display: 'inline-block', opacity: 0.6, fontSize: 13, padding: '8px 14px' }}>
-              SAM {t('در حال تایپ...', 'typing...')}
+              SAM {t('در حال تایپ...', 'is typing...')}
             </div>
           </div>
         )}
