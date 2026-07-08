@@ -29,7 +29,6 @@ export default function SideMenu({
     <>
       <div className={`menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`menu-panel ${isOpen ? 'open' : ''}`}>
-        {/* ===== پروفایل ===== */}
         <div className="profile-card">
           <div className="profile-avatar">{profileName.charAt(0)}</div>
           <div style={{ flex: 1 }}>
@@ -42,10 +41,11 @@ export default function SideMenu({
                 onKeyDown={(e) => e.key === 'Enter' && setEditingName(false)}
                 className="profile-input"
                 autoFocus
+                placeholder={t('اسمت رو وارد کن', 'Enter your name')}
               />
             ) : (
               <div className="profile-name" onClick={() => setEditingName(true)} style={{ cursor: 'pointer' }}>
-                {profileName} ✏️
+                {profileName || t('کاربر', 'User')} ✏️
               </div>
             )}
           </div>
@@ -53,7 +53,6 @@ export default function SideMenu({
 
         <div className="menu-divider" />
 
-        {/* ===== چت‌ها ===== */}
         <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '8px' }}>
           {chats.map((chat) => (
             <div
@@ -100,18 +99,11 @@ export default function SideMenu({
 
         <div className="menu-divider" />
 
-        {/* ===== تنظیمات ===== */}
         <button className="menu-item" onClick={() => { toggleTheme(); onClose(); }}>
           {isDark ? '☀️' : '🌙'} {t('تغییر تم', 'Theme')}
         </button>
         <button className="menu-item" onClick={() => { toggleLang(); onClose(); }}>
           🌐 {lang === 'fa' ? 'English' : 'فارسی'}
-        </button>
-
-        <div className="menu-divider" />
-
-        <button className="menu-item danger" onClick={() => { /* خروج - غیرفعال */ }}>
-          🚪 {t('خروج', 'Logout')}
         </button>
       </div>
     </>
