@@ -149,20 +149,19 @@ export default function ChatInterface({ lang }: Props) {
         <button
           onClick={send}
           disabled={loading}
-          style={{
-            padding: '8px 14px',
-            fontSize: 18,
-            minWidth: 40,
-            minHeight: 40,
-            borderRadius: '50%',
-            background: 'var(--red)',
-            color: '#fff',
-            border: 'none',
-            cursor: loading ? 'default' : 'pointer',
-            opacity: loading ? 0.5 : 1,
-          }}
+          className="send-button"
+          aria-label={t('ارسال پیام', 'Send message')}
         >
-          {loading ? '...' : '>'}
+          {loading ? (
+            <span style={{ fontSize: 16, lineHeight: 1 }}>···</span>
+          ) : (
+            <span className="send-icon">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </span>
+          )}
         </button>
       </div>
     </div>
