@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import ChatInterface from './components/ChatInterface';
@@ -40,7 +41,6 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
-      {/* هدر ثابت */}
       <header
         className="header"
         style={{
@@ -50,6 +50,12 @@ export default function Home() {
           padding: '6px 12px',
           marginBottom: '10px',
           flexShrink: 0,
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius)',
         }}
       >
         <button
@@ -79,7 +85,6 @@ export default function Home() {
         <div style={{ width: '32px' }} />
       </header>
 
-      {/* چت - بقیه فضای صفحه رو پر میکنه */}
       <div style={{ flex: 1, overflow: 'hidden' }}>
         <ChatInterface lang={lang} />
       </div>
