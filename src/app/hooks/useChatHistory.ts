@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
-type Message = {
+export type Message = {
   role: 'user' | 'assistant';
   content: string;
 };
 
-type Chat = {
+export type Chat = {
   id: string;
   title: string;
   messages: Message[];
@@ -25,7 +25,6 @@ export function useChatHistory() {
         setActiveChatId(parsed[0].id);
       }
     } else {
-      // چت پیش‌فرض
       const defaultChat: Chat = {
         id: Date.now().toString(),
         title: 'چت جدید',
@@ -43,17 +42,18 @@ export function useChatHistory() {
     localStorage.setItem('sam_ai_chats', JSON.stringify(chats));
   }, [chats]);
 
-  const getActiveChat = () => {
+  const getActiveChat = (): Chat | null => {
     return chats.find(c => c.id === activeChatId) || null;
   };
 
   const addMessage = (message: Message) => {
     setChats(prev => prev.map(chat => {
       if (chat.id === activeChatId) {
+        const newMessages = [...chat.messages, message];
         return {
           ...chat,
-          messages: [...chat.messages, message],
-          title: chat.messages.length === 1 ? message.content.slice(0, 30) + '...' : chat.title,
+          messages: newMessages,
+          title: chat.messages.length === 0 ? message.content.slice(0, 30) + '...' : chat.title,
         };
       }
       return chat;
