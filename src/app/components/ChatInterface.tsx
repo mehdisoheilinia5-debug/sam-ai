@@ -2,195 +2,140 @@
 import { useState, useEffect, useRef } from 'react';
 import { useChatHistory, type Message } from '../hooks/useChatHistory';
 
-interface ChatInterfaceProps {
-  lang: string;
-}
+interface Props { lang: string; }
 
-export default function ChatInterface({ lang }: ChatInterfaceProps) {
+export default function ChatInterface({ lang }: Props) {
   const { getActiveChat, addMessage, activeChatId } = useChatHistory();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
 
-  const t = (fa: string, en: string) => (lang === 'fa' ? fa : en);
+  const t = (fa: string, en: string) => lang === 'fa' ? fa : en;
 
-  // ===== هر وقت activeChatId عوض شد، پیام‌ها رو آپدیت کن =====
   useEffect(() => {
     const chat = getActiveChat();
     setMessages(chat?.messages || []);
-  }, [activeChatId, getActiveChat]);
+  }, [activeChatId]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const sendMessage = async () => {
+  const send = async () => {
     if (!input.trim() || loading) return;
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
-    addMessage(userMessage);
+    const user: Message = { role: 'user', content: input };
+    setMessages(prev => [...prev, user]);
+    addMessage(user);
     setInput('');
     setLoading(true);
-
     try {
-      const response = await fetch('/api/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-        }),
+        body: JSON.stringify({ messages: [...messages, user] }),
       });
-
-      const data = await response.json();
-      const assistantMessage: Message = {
+      const data = await res.json();
+      const assistant: Message = {
         role: 'assistant',
-        content: data.reply || t('متاسفانه پاسخی دریافت نشد.', 'Sorry, no response received.'),
+        content: data.reply || t('پاسخی دریافت نشد.', 'No response.'),
       };
-      setMessages((prev) => [...prev, assistantMessage]);
-      addMessage(assistantMessage);
+      setMessages(prev => [...prev, assistant]);
+      addMessage(assistant);
     } catch {
-      const errorMessage: Message = {
+      setMessages(prev => [...prev, {
         role: 'assistant',
-        content: t('خطا در ارتباط با سرور. دوباره تلاش کن.', 'Server error. Please try again.'),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-      addMessage(errorMessage);
+        content: t('خطا در ارتباط.', 'Connection error.'),
+      }]);
     } finally {
       setLoading(false);
     }
   };
 
-  const hasMessages = messages.length > 0;
-
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: 'calc(100vh - 120px)',
-        maxWidth: '720px',
-        margin: '0 auto',
-        padding: '0 10px',
-      }}
-    >
-      <div
-        style={{
-          flex: 1,
-          background: 'var(--bg-card)',
-          borderRadius: 'var(--radius)',
-          padding: '14px',
-          overflowY: 'auto',
-          border: '1px solid var(--border-color)',
-          marginBottom: '10px',
-          minHeight: '80px',
-        }}
-      >
-        {!hasMessages ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              color: 'var(--text-secondary)',
-              textAlign: 'center',
-              padding: '20px',
-            }}
-          >
-            <h3 style={{ fontSize: '17px', fontWeight: '600', marginBottom: '4px', color: 'var(--text-primary)' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: 'calc(100vh - 170px)',
+      maxWidth: 720,
+      margin: '0 auto',
+      padding: '0 10px',
+    }}>
+      <div style={{
+        flex: 1,
+        background: 'var(--bg-card)',
+        borderRadius: 14,
+        padding: 14,
+        overflowY: 'auto',
+        border: '1px solid var(--border-color)',
+        marginBottom: 10,
+      }}>
+        {messages.length === 0 ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            textAlign: 'center',
+            color: 'var(--text-secondary)',
+          }}>
+            <h3 style={{ fontSize: 17, fontWeight: 600, color: 'var(--text-primary)' }}>
               {t('به SAM AI خوش آمدید', 'Welcome to SAM AI')}
             </h3>
-            <p style={{ fontSize: '13px', opacity: 0.5, maxWidth: '280px' }}>
-              {t(
-                'دستیار هنری شما برای تحلیل شخصیت، نوشتن و ایده‌پردازی',
-                'Your artistic assistant for analysis, writing, and ideation'
-              )}
+            <p style={{ fontSize: 13, opacity: 0.5, maxWidth: 280 }}>
+              {t('دستیار هنری شما', 'Your artistic assistant')}
             </p>
           </div>
         ) : (
           messages.map((msg, i) => (
-            <div
-              key={i}
-              style={{
-                textAlign:
-                  msg.role === 'user'
-                    ? lang === 'fa'
-                      ? 'right'
-                      : 'left'
-                    : lang === 'fa'
-                    ? 'left'
-                    : 'right',
-                marginBottom: '8px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'inline-block',
-                  background: msg.role === 'user' ? 'var(--red-glow)' : 'var(--bg-input)',
-                  padding: '8px 14px',
-                  borderRadius: '12px',
-                  maxWidth: '80%',
-                  border: msg.role === 'assistant' ? '1px solid var(--border-color)' : 'none',
-                  color: 'var(--text-primary)',
-                  fontSize: '14px',
-                  lineHeight: '1.5',
-                }}
-              >
+            <div key={i} style={{
+              textAlign: msg.role === 'user' ? (lang === 'fa' ? 'right' : 'left') : (lang === 'fa' ? 'left' : 'right'),
+              marginBottom: 8,
+            }}>
+              <div style={{
+                display: 'inline-block',
+                background: msg.role === 'user' ? 'var(--red-glow)' : 'var(--bg-input)',
+                padding: '8px 14px',
+                borderRadius: 12,
+                maxWidth: '80%',
+                border: msg.role === 'assistant' ? '1px solid var(--border-color)' : 'none',
+                color: 'var(--text-primary)',
+                fontSize: 14,
+                lineHeight: 1.5,
+              }}>
                 {msg.content}
               </div>
             </div>
           ))
         )}
-        {loading && (
-          <div style={{ textAlign: 'left', opacity: 0.5, fontSize: '13px', marginTop: '4px' }}>
-            SAM {t('در حال تایپ...', 'is typing...')}
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+        {loading && <div style={{ opacity: 0.5, fontSize: 13, marginTop: 4 }}>SAM {t('در حال تایپ...', 'typing...')}</div>}
+        <div ref={endRef} />
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          paddingBottom: '6px',
-          flexShrink: 0,
-        }}
-      >
+      <div style={{ display: 'flex', gap: 8, paddingBottom: 6, flexShrink: 0 }}>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          onKeyDown={(e) => e.key === 'Enter' && send()}
           placeholder={t('پیامت رو به SAM بگو...', 'Tell SAM...')}
           className="input-field"
-          style={{
-            flex: 1,
-            padding: '10px 14px',
-            fontSize: '14px',
-            borderRadius: '24px',
-          }}
+          style={{ flex: 1, padding: '10px 14px', fontSize: 14, borderRadius: 24 }}
         />
         <button
-          onClick={sendMessage}
+          onClick={send}
           disabled={loading}
           style={{
             padding: '8px 14px',
-            fontSize: '18px',
-            minWidth: '40px',
-            minHeight: '40px',
+            fontSize: 18,
+            minWidth: 40,
+            minHeight: 40,
             borderRadius: '50%',
             background: 'var(--red)',
             color: '#fff',
             border: 'none',
             cursor: loading ? 'default' : 'pointer',
-            transition: 'all var(--transition)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             opacity: loading ? 0.5 : 1,
           }}
         >
