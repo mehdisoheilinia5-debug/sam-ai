@@ -25,7 +25,6 @@ export default function Home() {
         color: 'var(--text-primary)',
         padding: '0 8px',
         fontFamily: 'var(--font-sans)',
-        transition: 'all var(--transition)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -40,6 +39,9 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
+      {/* هدر با فاصله از بالا */}
+      <div style={{ height: '30px', flexShrink: 0 }} /> {/* ← این فاصله‌ی ثابت رو اضافه کردم */}
+
       <header
         className="header"
         style={{
@@ -47,7 +49,6 @@ export default function Home() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '10px 16px',
-          marginTop: '24px',
           marginBottom: '14px',
           flexShrink: 0,
           position: 'relative',
