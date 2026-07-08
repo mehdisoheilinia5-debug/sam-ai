@@ -23,7 +23,7 @@ export default function Home() {
         minHeight: '100vh',
         background: 'var(--bg-primary)',
         color: 'var(--text-primary)',
-        padding: '10px 8px 0 8px',
+        padding: '8px 8px 0 8px',  // ← فاصله از بالا و کناره‌ها
         fontFamily: 'var(--font-sans)',
         transition: 'all var(--transition)',
         display: 'flex',
@@ -40,21 +40,23 @@ export default function Home() {
         toggleLang={() => setLang(lang === 'fa' ? 'en' : 'fa')}
       />
 
+      {/* هدر با فاصله از بالا و چسبیده به بالا */}
       <header
         className="header"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '6px 12px',
+          padding: '8px 14px',
           marginBottom: '10px',
           flexShrink: 0,
           position: 'sticky',
-          top: 0,
-          zIndex: 10,
+          top: '4px',        // ← فاصله ۴ پیکسل از بالای صفحه
+          zIndex: 20,
           background: 'var(--bg-secondary)',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
         }}
       >
         <button
