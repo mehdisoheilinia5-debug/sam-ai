@@ -1,5 +1,6 @@
 'use client';
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import type { Lang } from './SettingsContext';
 
 export type Message = { role: 'user' | 'assistant'; content: string };
 export type Chat = { id: string; title: string; messages: Message[]; createdAt: string };
@@ -18,11 +19,21 @@ interface ChatHistoryValue {
 
 const ChatHistoryContext = createContext<ChatHistoryValue | null>(null);
 
-function createDefaultChat(): Chat {
+function greetingFor(lang: Lang) {
+  return lang === 'fa'
+    ? 'سلام! من SAM AI هستم. چطور می‌تونم کمکت کنم؟ 🎭'
+    : "Hi, I'm SAM AI. How can I help you today? 🎭";
+}
+
+function titleFor(lang: Lang) {
+  return lang === 'fa' ? 'چت جدید' : 'New Chat';
+}
+
+function createDefaultChat(lang: Lang): Chat {
   return {
     id: Date.now().toString(),
-    title: 'چت جدید',
-    messages: [{ role: 'assistant', content: 'سلام! من SAM AI هستم. چطور می‌تونم کمکت کنم؟ 🎭' }],
+    title: titleFor(lang),
+    messages: [{ role: 'assistant', content: greetingFor(lang) }],
     createdAt: new Date().toISOString(),
   };
 }
@@ -35,14 +46,24 @@ function persist(chats: Chat[]) {
   }
 }
 
-export function ChatHistoryProvider({ children }: { children: ReactNode }) {
+interface ProviderProps {
+  children: ReactNode;
+  lang: Lang;
+  settingsLoaded: boolean;
+}
+
+export function ChatHistoryProvider({ children, lang, settingsLoaded }: ProviderProps) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const initializedRef = useRef(false);
 
-  // On first load: restore saved chats, or immediately create AND persist a
-  // brand new chat. The user should never need to press "New Chat" for the
-  // very first conversation to exist and be saved.
+  // Waits for the saved language to finish loading (so the very first chat's
+  // greeting is created in the right language), then restores saved chats
+  // or immediately creates AND persists a brand-new one. Runs exactly once.
   useEffect(() => {
+    if (!settingsLoaded || initializedRef.current) return;
+    initializedRef.current = true;
+
     let initialChats: Chat[];
     let initialActiveId: string;
     try {
@@ -52,24 +73,22 @@ export function ChatHistoryProvider({ children }: { children: ReactNode }) {
         initialChats = parsed;
         initialActiveId = parsed[0].id;
       } else {
-        const chat = createDefaultChat();
+        const chat = createDefaultChat(lang);
         initialChats = [chat];
         initialActiveId = chat.id;
       }
     } catch {
-      const chat = createDefaultChat();
+      const chat = createDefaultChat(lang);
       initialChats = [chat];
       initialActiveId = chat.id;
     }
     setChats(initialChats);
     setActiveId(initialActiveId);
     persist(initialChats);
-  }, []);
+  }, [settingsLoaded, lang]);
 
   const getActiveChat = () => chats.find((c) => c.id === activeId) || null;
 
-  // Every mutation persists immediately and synchronously — saving no
-  // longer depends on a separate effect or on any button being pressed.
   const addMessage = (msg: Message) => {
     setChats((prev) => {
       const updated = prev.map((chat) => {
@@ -89,7 +108,7 @@ export function ChatHistoryProvider({ children }: { children: ReactNode }) {
   };
 
   const newChat = () => {
-    const chat = createDefaultChat();
+    const chat = createDefaultChat(lang);
     setChats((prev) => {
       const updated = [chat, ...prev];
       persist(updated);
