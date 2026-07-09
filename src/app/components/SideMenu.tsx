@@ -128,7 +128,7 @@ export default function SideMenu({ isOpen, onClose }: Props) {
           {t('تغییر تم', 'Theme')}
         </button>
         <button className="menu-item" onClick={toggleLang}>
-          {lang === 'fa' ? 'English' : 'فارسی'}
+          {lang === 'fa' ? 'انگلیسی' : 'Persian'}
         </button>
 
         <div className="menu-divider" />
