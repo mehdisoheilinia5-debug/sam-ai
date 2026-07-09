@@ -19,21 +19,19 @@ interface ChatHistoryValue {
 
 const ChatHistoryContext = createContext<ChatHistoryValue | null>(null);
 
-function greetingFor(lang: Lang) {
-  return lang === 'fa'
-    ? 'سلام! من SAM AI هستم. چطور می‌تونم کمکت کنم؟ 🎭'
-    : "Hi, I'm SAM AI. How can I help you today? 🎭";
-}
-
-function titleFor(lang: Lang) {
-  return lang === 'fa' ? 'چت جدید' : 'New Chat';
-}
+export const GREETING_MARKER = '__DEFAULT_GREETING__';
 
 function createDefaultChat(lang: Lang): Chat {
+  // Title and greeting are NOT baked in as fixed language text — an empty
+  // title falls back to a live-translated "New Chat" label in the UI, and
+  // the greeting marker gets resolved to the current language wherever
+  // it's displayed. This way a chat created in Persian still shows in
+  // English immediately after switching languages, and vice versa.
+  void lang; // kept in the signature for callers, no longer used to bake text in
   return {
     id: Date.now().toString(),
-    title: titleFor(lang),
-    messages: [{ role: 'assistant', content: greetingFor(lang) }],
+    title: '',
+    messages: [{ role: 'assistant', content: GREETING_MARKER }],
     createdAt: new Date().toISOString(),
   };
 }
