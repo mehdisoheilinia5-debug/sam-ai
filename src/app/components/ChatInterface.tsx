@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useChatHistory, type Message } from '../contexts/ChatHistoryContext';
+import { useChatHistory, GREETING_MARKER, type Message } from '../contexts/ChatHistoryContext';
 import { useSettings } from '../contexts/SettingsContext';
 
 function CopyButton({ text, label }: { text: string; label: string }) {
@@ -82,6 +82,11 @@ export default function ChatInterface() {
   const assistantAlign = lang === 'fa' ? 'left' : 'right';
   const userAlign = lang === 'fa' ? 'right' : 'left';
 
+  const resolveContent = (content: string) =>
+    content === GREETING_MARKER
+      ? t('سلام! من SAM AI هستم. چطور می‌تونم کمکت کنم؟ 🎭', "Hi, I'm SAM AI. How can I help you today? 🎭")
+      : content;
+
   return (
     <div
       style={{
@@ -145,11 +150,11 @@ export default function ChatInterface() {
                   lineHeight: 1.5,
                 }}
               >
-                {msg.content}
+                {resolveContent(msg.content)}
               </div>
               {msg.role === 'assistant' && (
                 <div>
-                  <CopyButton text={msg.content} label={t('کپی پیام', 'Copy message')} />
+                  <CopyButton text={resolveContent(msg.content)} label={t('کپی پیام', 'Copy message')} />
                 </div>
               )}
             </div>
