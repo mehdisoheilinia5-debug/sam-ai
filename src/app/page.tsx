@@ -8,7 +8,7 @@ import { useAuth } from './contexts/AuthContext';
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { lang } = useSettings();
+  const { lang, t } = useSettings();
   const { status } = useAuth();
 
   if (status === 'loading') {
@@ -88,7 +88,7 @@ export default function Home() {
           </svg>
           <div className="brand-text">
             <span className="brand-title">SAM AI</span>
-            <span className="brand-sub">{lang === 'fa' ? 'دستیار هنری تئاتر' : 'Theatre Arts Assistant'}</span>
+            <span className="brand-sub">{t('دستیار هنری شما', 'Your Artistic Assistant')}</span>
           </div>
         </div>
 
